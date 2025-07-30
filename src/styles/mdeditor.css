@@ -1,0 +1,99 @@
+/* Light theme customization for MDEditor */
+.w-md-editor {
+  --md-editor-bg: #ffffff !important;
+  --md-editor-border: #e5e7eb !important;
+  --md-editor-text: #111827 !important;
+  --md-editor-toolbar-bg: #f9fafb !important;
+  --md-editor-toolbar-hover: #f3f4f6 !important;
+  --md-editor-toolbar-active: #4e9951 !important;
+  --md-editor-toolbar-color: #374151 !important;
+  --md-editor-toolbar-border: #e5e7eb !important;
+}
+
+.w-md-editor {
+  background-color: var(--md-editor-bg) !important;
+  border-color: var(--md-editor-border) !important;
+  color: var(--md-editor-text) !important;
+}
+
+.w-md-editor-toolbar {
+  background-color: var(--md-editor-toolbar-bg) !important;
+  border-color: var(--md-editor-toolbar-border) !important;
+}
+
+.w-md-editor-toolbar ul > li > button {
+  color: var(--md-editor-toolbar-color) !important;
+}
+
+.w-md-editor-toolbar ul > li > button:hover {
+  background-color: var(--md-editor-toolbar-hover) !important;
+  color: var(--md-editor-toolbar-active) !important;
+}
+
+.w-md-editor-toolbar ul > li.active > button {
+  color: var(--md-editor-toolbar-active) !important;
+}
+
+.w-md-editor-text {
+  background-color: var(--md-editor-bg) !important;
+  color: var(--md-editor-text) !important;
+}
+
+.w-md-editor-preview {
+  background-color: var(--md-editor-bg) !important;
+  box-shadow: inset 1px 0 0 0 var(--md-editor-border) !important;
+}
+
+/* Syntax highlighting customization */
+.w-md-editor-text-pre > code,
+.w-md-editor-text-input {
+  color: var(--md-editor-text) !important;
+}
+
+/* Custom scrollbar */
+.w-md-editor-text-pre::-webkit-scrollbar,
+.w-md-editor-preview::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.w-md-editor-text-pre::-webkit-scrollbar-thumb,
+.w-md-editor-preview::-webkit-scrollbar-thumb {
+  background-color: #4e9951;
+  border-radius: 4px;
+}
+
+.w-md-editor-text-pre::-webkit-scrollbar-track,
+.w-md-editor-preview::-webkit-scrollbar-track {
+  background-color: #f3f4f6;
+}
+
+/* Preview content styling */
+.wmde-markdown {
+  background-color: var(--md-editor-bg) !important;
+  color: var(--md-editor-text) !important;
+}
+
+.wmde-markdown h1,
+.wmde-markdown h2,
+.wmde-markdown h3,
+.wmde-markdown h4,
+.wmde-markdown h5,
+.wmde-markdown h6 {
+  color: #111827 !important;
+  border-bottom-color: var(--md-editor-border) !important;
+}
+
+.wmde-markdown a {
+  color: #4e9951 !important;
+}
+
+.wmde-markdown blockquote {
+  border-left-color: #4e9951 !important;
+  background-color: #f9fafb !important;
+}
+
+.wmde-markdown code {
+  background-color: #f3f4f6 !important;
+  color: #4e9951 !important;
+}
