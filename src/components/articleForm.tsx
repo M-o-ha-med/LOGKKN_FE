@@ -492,7 +492,7 @@ export default function ArticleForm() {
                   {images.length > 0 && (
                     <div className="mt-4">
                       <h4 className="text-sm font-medium text-gray-700 mb-2">Image Previews:</h4>
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      <div className="mt-2 flex flex-wrap gap-2">
                         {images.map((url, index) => (
                           <ThumbnailImage 
                             key={`${url}-${index}`}

@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import Toast from '../components/toast.tsx';
 
 
-
 const LoginPage: React.FC = () => {
 
 	const navigate = useNavigate();

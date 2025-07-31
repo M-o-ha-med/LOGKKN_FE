@@ -39,3 +39,8 @@ export type ThumbnailImageProps = {
 	onRemove: (url : string) => void;
 };
 	
+export type LogImages = {
+	image_url : string,
+	image_fileid : string,
+	logbook_images_id : number,
+}
