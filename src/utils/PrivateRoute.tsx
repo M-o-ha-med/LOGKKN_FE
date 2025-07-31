@@ -1,6 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useEffect , useState} from "react";
 import { atom , useRecoilState  } from "recoil";
+import axios from 'axios';
 
 export const authState = atom<boolean>({
 	key : "AuthState",
@@ -18,8 +19,8 @@ export const PrivateRoute: React.FC =  () => {
 		const authenticateUser = async () => {
 		
 			try {
-			
-				console.log("Auth API Response:", state_val);
+				const {data} = await axios.get(`${import.meta.env.VITE_API_URL}/auth/check` , {withCredentials: true});
+				setAuthState(data.user.state);
 			}
 			catch(e){setAuthState(false)}
 			finally{setLoading(false)}

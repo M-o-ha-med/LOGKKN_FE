@@ -6,6 +6,7 @@ import LoginPage from './pages/loginPage.tsx';
 import AdminPage from './pages/AdminPage.tsx';
 import LandingPage from './pages/LandingPage.tsx';
 import ArticlePage from './pages/ArticlePage.tsx';
+import ResetPasswordPage from './pages/ResetPasswordPage.tsx'
 import PrivateRoute from './utils/PrivateRoute.tsx';
 import PublicRoute from './utils/PublicRoute.tsx';
 import { RecoilRoot } from 'recoil';
@@ -39,6 +40,7 @@ root.render( // Use render to update app
 					<Route path="/" element={<LandingPage />} />
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/logs/:slug" element={<ArticlePage />} />
+					<Route path="/login/forget" element={<ResetPasswordPage />} />
 				</Route>
 					
 				</Routes>

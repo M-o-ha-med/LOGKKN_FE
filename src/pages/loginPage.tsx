@@ -1,7 +1,7 @@
 import React, { useState} from "react";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
-import Toast from '../components/toast.tsx';
+import Toast from '../components/Toast.tsx';
 
 
 const LoginPage: React.FC = () => {
@@ -59,7 +59,7 @@ const LoginPage: React.FC = () => {
 						<div className="mt-4">
 							<div className="flex justify-between">
 								<label className="block text-gray-700 text-sm font-bold mb-2">Password</label>
-								<a href="/admin/login/forget" className="text-xs text-gray-500">
+								<a href="/login/forget" className="text-xs text-gray-500">
 									Forget Password?
 								</a>
 							</div>

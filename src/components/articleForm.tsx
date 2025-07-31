@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import axios, { AxiosError } from 'axios';
 import { useParams, useNavigate } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
-import Toast from '../components/toast.tsx';
+import Toast from '../components/Toast.tsx';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createArticleSchema, updateArticleSchema } from '../utils/FormValidation/ArticleSchema.tsx';
