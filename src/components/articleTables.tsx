@@ -162,7 +162,7 @@ export default function ArticlesTable() {
                     <td className="p-3">
                       <div className="flex flex-col md:flex-row gap-2 justify-center items-center">
                         <Link 
-                          to={`/admin/Articles/update/${item.slug}`} 
+                          to={`/admin/articles/update/${item.slug}`} 
                           className="flex items-center justify-center px-3 rounded-md bg-blue-700 text-white p-2 w-24 hover:bg-blue-800 transition-colors"
                         >
                           <span className="text-xl"><FiEdit /></span>

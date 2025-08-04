@@ -276,11 +276,7 @@ export default function ArticleForm() {
               formData.append(`existing_images`, image);
             }
           });
-        } else if (data.images instanceof File) {
-          if (validateImageFile(data.images)) {
-            formData.append("images", data.images);
-          }
-        }
+        } 
       }
 
       // Add images to delete for updates
@@ -474,8 +470,6 @@ export default function ArticleForm() {
                           setImageFiles(prev => [...prev, ...validFiles]);
                           
                           if (isUpdate) {
-                            field.onChange(validFiles[0]);
-                          } else {
                             field.onChange(validFiles);
                           }
                         }
