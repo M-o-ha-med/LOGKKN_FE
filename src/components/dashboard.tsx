@@ -35,12 +35,12 @@ export default function Dashboard() {
                 </div>
               </div>
 			  
-            ) : ( location.pathname === '/admin/articles/new' || location.pathname === `/admin/Articles/update/${slug}`) ? (
+            ) : ( location.pathname === '/admin/articles/new' || location.pathname === `/admin/articles/update/${slug}`) ? (
                 <div className="bg-white shadow rounded-lg p-6">
 					<ArticleForm />
 				</div>
 			
-			) : (
+			) :(
 			
               <div className="space-y-8">
 				<div className='grid grid-cols-2 gap-6'>
