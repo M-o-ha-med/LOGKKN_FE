@@ -275,6 +275,10 @@ export default function ArticleForm() {
             } else if (typeof image === 'string') {
               formData.append(`existing_images`, image);
             }
+			
+			else {
+				Toast.fire({title : 'Unknown Data Type' , icon : 'error'});
+			}
           });
         } 
       }
