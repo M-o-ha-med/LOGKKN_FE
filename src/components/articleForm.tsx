@@ -61,7 +61,7 @@ export default function ArticleForm() {
   const [imageToDelete, setImageToDelete] = useState<string[]>([]);
   
   // Safely determine if this is an update operation
-  const isUpdate = Boolean(slug && location.pathname.includes(`/admin/Articles/update/${slug}`));
+  const isUpdate = Boolean(slug && location.pathname.includes(`/admin/articles/update/${slug}`));
   const activeSchema = isUpdate ? updateArticleSchema : createArticleSchema;
   
   type ArticleFormData = z.infer<typeof activeSchema>;
