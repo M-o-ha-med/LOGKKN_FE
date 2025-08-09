@@ -82,10 +82,10 @@ export default function LandingPage() {
   const [articles, setArticles] = useState<Logs[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<ApiError | null>(null);
-  const [retryCount, setRetryCount] = useState<number>(0);
+  const [retryCount, setRetryCount] = useState<number>(1);
 
-  const MAX_RETRY_ATTEMPTS = 3;
-  const RETRY_DELAY = 1000; // 1 second
+  const MAX_RETRY_ATTEMPTS = 4;
+  const RETRY_DELAY = 2000; // 1 second
 
   // Enhanced fetch function with comprehensive error handling
   const fetchArticles = useCallback(async () => {
@@ -109,7 +109,8 @@ export default function LandingPage() {
       });
 
       const response = await apiClient.get(`${apiUrl}/articles`);
-
+	  
+	  console.log(response.data);
       // Validate response structure
       if (!response.data) {
         throw new Error("No data received from server");
@@ -117,12 +118,8 @@ export default function LandingPage() {
 
       // Handle different response formats
       let articlesData: any[];
-      if (Array.isArray(response.data)) {
-        articlesData = response.data;
-      } else if (response.data.articles && Array.isArray(response.data.articles)) {
-        articlesData = response.data.articles;
-      } else if (response.data.data && Array.isArray(response.data.data)) {
-        articlesData = response.data.data;
+      if (Array.isArray(response.data.article_data)) {
+        articlesData = response.data.article_data;
       } else {
         throw new Error("Invalid response format from server");
       }
@@ -135,13 +132,14 @@ export default function LandingPage() {
       if (validArticles.length === 0 && articlesData.length > 0) {
         throw new Error("No valid articles found in response");
       }
+	  
 
       setArticles(validArticles);
       setRetryCount(0); // Reset retry count on success
 
-    } catch (err) {
+    } catch (err : unknown) {
       let errorInfo: ApiError = {
-        message: "Failed to load articles",
+        message: err instanceof Error ? err.message : "Unknown error",
         retry: true
       };
 
@@ -153,7 +151,6 @@ export default function LandingPage() {
       if (errorInfo.retry && retryCount < MAX_RETRY_ATTEMPTS) {
         setTimeout(() => {
           setRetryCount(prev => prev + 1);
-          fetchArticles();
         }, RETRY_DELAY * Math.pow(2, retryCount)); // Exponential backoff
       }
 
@@ -168,7 +165,6 @@ export default function LandingPage() {
 
   // Manual retry function
   const handleRetry = () => {
-    setRetryCount(0);
     fetchArticles();
   };
 
@@ -186,7 +182,7 @@ export default function LandingPage() {
             <p className="text-gray-600 text-lg">Memuat artikel...</p>
             {retryCount > 0 && (
               <p className="text-sm text-gray-500 mt-2">
-                Percobaan ke-{retryCount + 1} dari {MAX_RETRY_ATTEMPTS + 1}
+                Percobaan ke-{retryCount} dari {MAX_RETRY_ATTEMPTS}
               </p>
             )}
           </div>

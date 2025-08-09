@@ -3,12 +3,13 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from "axios";
-import type { Logs } from '../types/type';
+import type { Logs , LogImages} from '../types/type';
 import DeleteAlert from '../components/alerts.tsx';
 
 export default function ArticlesTable() {
   // State management
   const [articles, setArticles] = useState<Logs[]>([]);
+  const [articleImages , setArticleImages] = useState<LogImages[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   
@@ -27,13 +28,15 @@ export default function ArticlesTable() {
 	  await deleteArticle(slug);
 	  setShowAlert(false);
   };
+      // Check authentication
+
   
   async function fetchArticles() {
     setLoading(true);
     try {
       const response = await axios.get(`${import.meta.env.VITE_API_URL}/articles`);
-	  console.log(response);
-      setArticles(response.data);
+      setArticles(response.data.article_data);
+	  setArticleImages(response.data.article_image_data);
       setError(null);
     } catch (err) {
       console.error("Failed to fetch articles:", err);
@@ -45,8 +48,21 @@ export default function ArticlesTable() {
   
   async function deleteArticle(slug: string) {
     try {
+	  const credentials = await axios.get(
+		`${import.meta.env.VITE_API_URL}/auth/check`,
+		{ withCredentials: true, timeout: 5000 }
+	  );
+	  
+	  const config = {
+		  withCredentials: true,
+		  timeout: 30000, // 30 seconds for file uploads
+		  headers: {
+			  'authorization': `Bearer ${credentials.data.token}`,
+			  'Content-Type': 'multipart/form-data'
+		  }
+	  };
       
-      await axios.delete(`${import.meta.env.VITE_API_URL}/articles/delete/${slug}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/articles/delete/${slug}` , config);
       fetchArticles();
     } 
 	
@@ -67,6 +83,7 @@ export default function ArticlesTable() {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = articles.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItemsImage = articleImages.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(articles.length / itemsPerPage);
   
   // Change page
@@ -156,9 +173,13 @@ export default function ArticlesTable() {
                   <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
                     <td className="p-3">{indexOfFirstItem + index + 1}</td>
                     <td className="p-3">{item.title}</td>
-                    <td className="p-3 text-center">
-                      <img src={item.image_url[0]} className="w-24 h-auto mx-auto rounded-md object-cover" alt={item.title} />
-                    </td>
+					
+			
+					<td className="p-3 text-center">
+						<img src={currentItemsImage[0].image_url} className="w-24 h-auto mx-auto rounded-md object-cover" alt={item.title} />
+					</td>
+			
+
                     <td className="p-3">
                       <div className="flex flex-col md:flex-row gap-2 justify-center items-center">
                         <Link 

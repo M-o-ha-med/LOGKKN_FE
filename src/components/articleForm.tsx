@@ -57,7 +57,7 @@ export default function ArticleForm() {
   const [error, setError] = useState<ApiError | null>(null);
   const { slug } = useParams<{ slug: string }>();
   const [images, setImages] = useState<string[]>([]);
-  const [ _ , setImageFiles] = useState<File[]>([]);
+  const [_, setImageFiles] = useState<File[]>([]);
   const [imageToDelete, setImageToDelete] = useState<string[]>([]);
   
   // Safely determine if this is an update operation
@@ -78,7 +78,7 @@ export default function ArticleForm() {
     defaultValues: {
       title: '',
       content: '',
-      images: undefined,
+      images: [],
     },
     mode: 'onChange' // Enable real-time validation
   });
@@ -113,7 +113,7 @@ export default function ArticleForm() {
       if (Array.isArray(fieldValues)) {
         newFieldValues = fieldValues.filter((item) => {
           if (typeof item === 'string') return item !== urlToDelete;
-          if (item instanceof File) {
+          else if (item instanceof File) {
             const fileUrl = URL.createObjectURL(item);
             const shouldKeep = fileUrl !== urlToDelete;
             if (!shouldKeep) URL.revokeObjectURL(fileUrl);
@@ -128,7 +128,7 @@ export default function ArticleForm() {
       setFormImages(newFieldValues);
       
       if (!isExistingImage) {
-        setFiles((prev: File[]) => prev.filter((file: File) => {
+        setFiles((prev: File[] ) => prev.filter((file: File) => {
           const fileUrl = URL.createObjectURL(file);
           const shouldKeep = fileUrl !== urlToDelete;
           if (!shouldKeep) URL.revokeObjectURL(fileUrl);
@@ -170,6 +170,8 @@ export default function ArticleForm() {
         `${apiUrl}/articles/${encodeURIComponent(slug)}`
       );
 
+	  console.log(response.data);
+	  
       // Validate response structure
       if (!response.data || !Array.isArray(response.data) || response.data.length < 2) {
         throw new Error("Invalid response format from server");
@@ -225,6 +227,7 @@ export default function ArticleForm() {
       });
 
     } finally {
+	  
       setLoading(false);
     }
   }, [slug, isUpdate, setValue]);
@@ -287,6 +290,10 @@ export default function ArticleForm() {
       if (isUpdate && imageToDelete.length > 0) {
         formData.append("images_to_delete", JSON.stringify(imageToDelete));
       }
+	  
+	  else{
+		formData.append("images_to_delete", JSON.stringify([]));
+	  }
 
       const config = {
         withCredentials: true,
@@ -452,15 +459,21 @@ export default function ArticleForm() {
               name="images"
               render={({ field }) => (
                 <>
+				
                   <input
                     type="file"
+					name={field.name}
+					ref={field.ref}
                     accept="image/jpeg,image/jpg,image/png,image/webp"
                     multiple={!isUpdate}
                     onChange={(e) => {
                       if (e.target.files && e.target.files.length > 0) {
                         const files = Array.from(e.target.files);
+					
                         const validFiles = files.filter(validateImageFile);
+						
                         
+						
                         if (validFiles.length !== files.length) {
                           Toast.fire({
                             title: "Some images were invalid and skipped",
@@ -472,10 +485,8 @@ export default function ArticleForm() {
                           const newImageUrls = validFiles.map(file => URL.createObjectURL(file));
                           setImages(prev => [...prev, ...newImageUrls]);
                           setImageFiles(prev => [...prev, ...validFiles]);
-                          
-                          if (isUpdate) {
-                            field.onChange(validFiles);
-                          }
+						  
+						  field.onChange([...field.value, ...validFiles]); 
                         }
                       }
                     }}
